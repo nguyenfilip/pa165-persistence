@@ -16,8 +16,6 @@ public class PrimitiveTier {
 		
 		PetStoreView view = appContext.getBean("view",PetStoreView.class);
 		view.startInteraction();
-	
-		
 		
 	}
 	

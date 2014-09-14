@@ -22,22 +22,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class DaoContext {
 	
 	@Bean 
-	public JdbcTemplate dbTemplate(){
-		JdbcTemplate template = new JdbcTemplate(db());
-		return template;
-	}
-		
-	@Bean
-	public PersonDao personDao(){
-		return new PersonDao();
-	}
-
-	@Bean
-	public DogDao dogDao() {
-		return new DogDao();
-	}
-	
-	@Bean 
 	public JpaTransactionManager transactionManager(){
 		return  new JpaTransactionManager(jpaFactoryBean().getObject());
 	}
@@ -55,7 +39,6 @@ public class DaoContext {
 	public LoadTimeWeaver instrumentationLoadTimeWeaver() {
 		return new InstrumentationLoadTimeWeaver();
 	}
-
 
 	@Bean
 	public DataSource db(){

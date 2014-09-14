@@ -21,10 +21,7 @@ public class NaiveShowAndSellPet {
 				DaoContext.class);
 		
 		DataSource ds = (DataSource) appContext.getBean("db");
-	
 		showAllPets(ds);
-		
-		
 		sellPet(ds);
 		showAllPets(ds);
 		
