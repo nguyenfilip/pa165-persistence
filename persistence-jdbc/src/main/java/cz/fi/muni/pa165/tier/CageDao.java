@@ -37,7 +37,7 @@ public class CageDao {
 		}
 	}
 
-	public Cage findCage(int id) {
+	public Cage find(int id) {
 		Cage result = new Cage();
 		Connection con = null;
 		try {

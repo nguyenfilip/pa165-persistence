@@ -8,7 +8,7 @@ import cz.fi.muni.pa165.DaoContext;
 /**
  * Show all pets in the store and then sell one based on users input
  */
-public class PrimitiveTier {
+public class PrimitiveTierMain {
 	
 	public static void main(String[] args) {
 		ApplicationContext appContext = new AnnotationConfigApplicationContext(
@@ -16,7 +16,6 @@ public class PrimitiveTier {
 		
 		PetStoreView view = appContext.getBean("view",PetStoreView.class);
 		view.startInteraction();
-		
 	}
 	
 	

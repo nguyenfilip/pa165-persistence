@@ -1,8 +1,8 @@
 package cz.fi.muni.pa165.entity;
 
 import java.util.Date;
+import java.util.HashSet;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

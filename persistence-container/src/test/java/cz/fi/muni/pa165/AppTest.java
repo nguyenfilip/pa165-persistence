@@ -77,8 +77,7 @@ public class AppTest  extends AbstractTestNGSpringContextTests
 		Assert.assertNotNull(emf);
 	}
 	
-
-
+	
 	@Test
 	public void selectCagesWithPets() {
 		EntityManager em = emf.createEntityManager();

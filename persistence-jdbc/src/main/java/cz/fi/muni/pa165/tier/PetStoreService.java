@@ -29,12 +29,12 @@ public class PetStoreService {
 	}
 
 	public Map<Integer, Pet> getAllPets() {
-		return petDao.findAllPets();
+		return petDao.findAll();
 	}
 
 	@Transactional
 	public void sellPet(Pet pet) {
-		Cage cage = cageDao.findCage(pet.getCageFk());
+		Cage cage = cageDao.find(pet.getCageFk());
 		cage.setRemaining(Math.min(cage.getRemaining()+1, cage.getCapacity()));
 		pet.setCageFk(null);
 		petDao.update(pet);

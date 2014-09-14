@@ -19,28 +19,7 @@ public class PetDao {
 	public void setDatasource(DataSource db) {
 		this.ds = db;
 	}
-	
-	public void update(Pet pet) {
-		Connection con = null;
-		try {
-			con = ds.getConnection();
-			con.setAutoCommit(false);
-			PreparedStatement st = con
-					.prepareStatement("UPDATE PETS SET ID = ?, NAME=?, TYPENAME=?, CAGE_FK=? WHERE ID = ? ");
-			st.setInt(1, pet.getId());
-			st.setString(2, pet.getName());
-			st.setString(3, pet.getTypename());
-			st.setObject(4, pet.getCageFk());
-			st.setInt(5, pet.getId());
-			st.executeUpdate();
-			con.commit();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			DataSourceUtils.releaseConnection(con, ds);
-		}
-	}
-	
+
 
 	public void update(Pet pet) {
 		Connection con = null;
@@ -62,7 +41,7 @@ public class PetDao {
 		}
 	}
 
-	public Map<Integer, Pet> findAllPets() {
+	public Map<Integer, Pet> findAll() {
 		HashMap<Integer, Pet> result = new HashMap<Integer, Pet>();
 		try (Connection con = DataSourceUtils.getConnection(ds)) {
 			Statement st = con.createStatement();
