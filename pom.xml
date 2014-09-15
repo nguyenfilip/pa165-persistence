@@ -23,8 +23,8 @@
 	</dependencyManagement>
 
     <modules>
-        <module>persistence-jdbc</module>
-        <module>persistence-container</module>
+        <module>persistence-app</module>
+        <module>persistence-jpql</module>
     </modules>
 
     <build>
