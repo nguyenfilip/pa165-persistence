@@ -22,7 +22,7 @@ import cz.fi.muni.pa165.entity.Pet.PetColor;
 
 
 @ContextConfiguration(classes=DaoContext.class)
-public class AppTest  extends AbstractTestNGSpringContextTests
+public class BaseJPQLTest  extends AbstractTestNGSpringContextTests
 {
 	@PersistenceUnit
 	public EntityManagerFactory emf;

@@ -21,29 +21,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class DaoContext {
 	
-	@Bean 
-	public JpaTransactionManager transactionManager(){
-		return  new JpaTransactionManager(jpaFactoryBean().getObject());
-	}
 	
-	@Bean
-	public LocalContainerEntityManagerFactoryBean  jpaFactoryBean(){
-		LocalContainerEntityManagerFactoryBean jpaFactoryBean = new LocalContainerEntityManagerFactoryBean ();
-		jpaFactoryBean.setDataSource(db());
-		jpaFactoryBean.setLoadTimeWeaver(instrumentationLoadTimeWeaver());
-		jpaFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-		return jpaFactoryBean;
-	}
-	
-	@Bean
-	public LoadTimeWeaver instrumentationLoadTimeWeaver() {
-		return new InstrumentationLoadTimeWeaver();
-	}
-
 	@Bean
 	public DataSource db(){
 		EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
 		EmbeddedDatabase db = builder.setType(EmbeddedDatabaseType.DERBY).build();
+		
 		return db;
 	}
 }
