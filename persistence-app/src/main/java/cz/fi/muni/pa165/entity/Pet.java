@@ -24,13 +24,13 @@ public class Pet {
 	@GeneratedValue
 	private long id = 0;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date birthDate;
 
 	@Column(nullable=false)
 	private String name;
 	
-	@ManyToOne
+	@Transient
 	private Cage cage = null;
 	
 	@Enumerated(EnumType.STRING)

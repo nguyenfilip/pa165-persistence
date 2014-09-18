@@ -15,7 +15,7 @@ https://docs.jboss.org/hibernate/orm/4.3/devguide/en-US/html_single/ . Rerun **T
 **Task 08** Verify that a Cage can be created, stored and retrieved from the database. To do this, persist two cages and implement new method AppMain.findAllCages(EntityManagerFactory emf). 
 **Task 09** Wait. There is a bug in Cage entity. Its a nasty one, because our application works well so far. I belive you will find the bug if you take a look into specification. Some methods that JPA specification requires are missing. Hint: look through bulletpoints on page 30 in the specification (section 2.4).
 **Task 10** Adding relationships. Now we have cages and we have Pets. We would like to assign a Cage to a Pet. To be able to do so you need to map the relationship. In Pet entity, remove @Transient and replace it with @ManyToOne. Rerun **Task 03** to verify everything works fine so far. Now in your main method use setCage on some of your pets to add the Pet to the Cage. 
-**Task 11** Understand transient instances. Now try code such as this: 
+**Task 11** Understand transient instances: try code such as this: 
 ```java
 		em.getTransaction().begin();
 		Pet pet = new Pet();

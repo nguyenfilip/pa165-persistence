@@ -3,23 +3,18 @@ package cz.fi.muni.pa165.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 
-@Entity
+
 public class Cage {
 
-	@Id
-	@GeneratedValue
 	private long id = -1;
 
 	private String description;
 	private int capacity;
 	
-	@OneToMany(mappedBy="cage")
+	@Transient
 	private Set<Pet> pets = new HashSet<Pet>();
 
 	public long getId() {
@@ -52,28 +47,6 @@ public class Cage {
 
 	public void setPets(Set<Pet> pets) {
 		this.pets = pets;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cage other = (Cage) obj;
-		if (id != other.id)
-			return false;
-		return true;
 	}
 
 	@Override
