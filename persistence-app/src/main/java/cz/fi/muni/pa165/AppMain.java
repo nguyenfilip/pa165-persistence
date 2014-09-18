@@ -49,7 +49,6 @@ public class AppMain {
 		
 		for (Pet p : pets) {
 			System.out.println(p);
-			System.out.println(p.getCage());
 		}
 		
 		em.close();
