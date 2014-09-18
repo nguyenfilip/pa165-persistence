@@ -40,6 +40,7 @@ public class AppMain {
 		Pet pet1 = new Pet();
 		pet1.setName("Sisi");
 		pet1.setCage(cage1);
+		cage1.addPet(pet1);
 		cal.set(2013, 1, 22);
 		pet1.setBirthDate(cal.getTime());
 		pet1.setColor(PetColor.BLACK);
@@ -47,6 +48,7 @@ public class AppMain {
 		Pet pet2 = new Pet();
 		pet2.setName("Rex");
 		pet2.setCage(cage1);
+		cage1.addPet(pet2);
 		cal.set(2012, 1, 4);
 		pet2.setBirthDate(cal.getTime());
 		pet2.setColor(PetColor.RED);
@@ -54,6 +56,7 @@ public class AppMain {
 		Pet pet3 = new Pet();
 		pet3.setName("Dan");
 		pet3.setCage(cage2);
+		cage2.addPet(pet3);
 		cal.set(2013, 5, 21);
 		pet3.setBirthDate(cal.getTime());
 		pet3.setColor(PetColor.WHITE);
@@ -61,6 +64,7 @@ public class AppMain {
 		Pet pet4 = new Pet();
 		pet4.setName("Fiona");
 		pet4.setCage(cage2);
+		cage2.addPet(pet4);
 		cal.set(2014, 2, 12);
 		pet4.setBirthDate(cal.getTime());
 		pet4.setColor(PetColor.WHITE);

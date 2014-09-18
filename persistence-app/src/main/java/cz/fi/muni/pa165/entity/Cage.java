@@ -81,9 +81,10 @@ public class Cage {
 		return "Cage [id=" + id + ", description=" + description
 				+ ", capacity=" + capacity  + "]";
 	}
-	
-	
 
-	
+	public void addPet(Pet pet) {
+		pets.add(pet);
+		
+	}
 	
 }
