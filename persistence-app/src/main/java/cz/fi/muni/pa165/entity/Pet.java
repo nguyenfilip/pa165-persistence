@@ -24,7 +24,7 @@ public class Pet {
 	@GeneratedValue
 	private long id = 0;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date birthDate;
 
 	@Column(nullable=false)
