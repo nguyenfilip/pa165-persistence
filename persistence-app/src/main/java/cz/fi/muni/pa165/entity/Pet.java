@@ -13,10 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 
 
-@NamedQuery(name="findAll",query="SELECT p FROM Pet p")
 @Entity
 public class Pet {
 
@@ -24,13 +24,13 @@ public class Pet {
 	@GeneratedValue
 	private long id = 0;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date birthDate;
 
 	@Column(nullable=false)
 	private String name;
 	
-	@ManyToOne()
+	@ManyToOne
 	private Cage cage = null;
 	
 	@Enumerated(EnumType.STRING)

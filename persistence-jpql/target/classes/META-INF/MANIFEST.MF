@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Built-By: fnguyen
-Build-Jdk: 1.7.0_67
+Built-By: kalaz
+Build-Jdk: 1.7.0_51
 Created-By: Maven Integration for Eclipse
 

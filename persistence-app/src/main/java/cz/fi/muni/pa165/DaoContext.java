@@ -17,6 +17,12 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
+/**
+ * You probably don't understand this code. It will be in later lectures.
+ * 
+ * @author Filip Nguyen
+ *
+ */
 @Configuration
 @EnableTransactionManagement
 public class DaoContext {
@@ -26,7 +32,6 @@ public class DaoContext {
 	public DataSource db(){
 		EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
 		EmbeddedDatabase db = builder.setType(EmbeddedDatabaseType.DERBY).build();
-		
 		return db;
 	}
 }
