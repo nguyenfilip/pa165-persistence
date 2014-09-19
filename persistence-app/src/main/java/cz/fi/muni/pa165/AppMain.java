@@ -80,6 +80,7 @@ public class AppMain {
 		em.close();
 		
 		printAllCages(emf);
+                emf.close();
 	}
 	
 	public static void printAllPets(EntityManagerFactory emf){
