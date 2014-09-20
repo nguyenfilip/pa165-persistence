@@ -41,14 +41,14 @@ You will get TransientPropertyValueException. Why is that? Its because your Cage
 
 **Task 11** We now can set a Cage for a Pet. Let's output this fact to the console. Modify your AppMain.printAllPets to not only show all Pets but also for each Pet print out the cage in which it is accomodated.
 
-**Task 12** Perfect, now we have unidirectional relatinship where Pet has a reference to a Cage. We would like to create this relationship bidirectional (so that Cage also knows all Pets in itself). Open Cage entity and remove @Transient annotation. Instead add @OneToMany(mappedBy="cage").
+**Task 12** Perfect, now we have unidirectional relationship where Pet has a reference to a Cage. We would like to create this relationship bidirectional (so that Cage also knows all Pets in itself). Open Cage entity and remove @Transient annotation. Instead add @OneToMany(mappedBy="cage").
 
-**Task 13** Make sure that in yoru main method you create at least 2 Cages and at least 4 Pets and that you distribute these Pets among the Cages. 
+**Task 13** Make sure that in your main method you create at least 2 Cages and at least 4 Pets and that you distribute these Pets among the Cages. 
 
 **Task 14** Modify your AppMain.printAllCages to print all pets in the Cage.
 
 **Task 15** Make sure you maintain runtime consistency of your relationships. 
-That means that when you add set a cage for a pet through Pet.setCage method, you also add the Pet to the collection on the Cage entity. This is very important and JPA spec requires the developer to do this!
+It means that when you add a cage to a pet through Pet.setCage() method, you also add the Pet to the collection held in the Cage entity. In other words, you maintain the relationship from both sides. This is very important and JPA spec requires the developer to do this!
 
 **Task 16** You can see that the output shows that Pets have birthDate also with time. This information is really not necessary. Change the annotation on birthDate field in Pet so that the date is stored in the database only witth Year, Month, Date components.  
 
@@ -60,7 +60,7 @@ That means that when you add set a cage for a pet through Pet.setCage method, yo
  5. What is hibernate.hbm2ddl.auto property in persistence.xml file?
 
  
-**Task 18** As homework, solve the following https://is.muni.cz/auth/el/1433/podzim2014/PA165/um/cv/2012_PA165_cv02.pdf in a new Java project
+**Task 18** As homework, solve the following https://is.muni.cz/auth/el/1433/podzim2014/PA165/um/cv/2012_PA165_cv02.pdf in a new Java project. Consider downloading the .pdf file in case you are not able to copy the xml snippet from the browser pdf reader.
  
 
 

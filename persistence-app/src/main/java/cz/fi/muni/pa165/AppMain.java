@@ -39,6 +39,7 @@ public class AppMain {
 		em.close();
 		
 		printAllPets(emf);
+    emf.close();
 	}
 	
 	public static void printAllPets(EntityManagerFactory emf){
