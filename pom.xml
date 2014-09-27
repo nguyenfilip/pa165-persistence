@@ -24,7 +24,7 @@
 
     <modules>
         <module>persistence-app</module>
-        <module>persistence-jpql</module>
+        <module>persistence-container</module>
     </modules>
 
     <build>
