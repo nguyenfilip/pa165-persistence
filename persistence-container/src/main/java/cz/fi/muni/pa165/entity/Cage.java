@@ -4,8 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 
@@ -17,10 +19,24 @@ public class Cage {
 	private long id = -1;
 
 	private String description;
+	
 	private int capacity;
 	
 	@OneToMany(mappedBy="cage")
 	private Set<Pet> pets = new HashSet<Pet>();
+
+	@ManyToOne
+	private PetStore petStore;
+	
+	
+	
+	public PetStore getPetStore() {
+		return petStore;
+	}
+
+	public void setPetStore(PetStore petStore) {
+		this.petStore = petStore;
+	}
 
 	public long getId() {
 		return id;
