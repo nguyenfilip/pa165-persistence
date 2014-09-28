@@ -78,8 +78,7 @@ public class EntityLifecycleTest  extends AbstractTestNGSpringContextTests
 		Pet petFromDb = em.find(Pet.class, pet1Id);
 		Assert.assertEquals(petFromDb.getName(),"Honza");
 		
-		//CHANGE MANAGED ENTITY HERE
-		pet.setName("Marek");
+		//CHANGE MANAGED ENTITY HERE, set the name to Marek
 		
 		petFromDb = em.find(Pet.class, pet1Id);
 		Assert.assertEquals(petFromDb.getName(),"Marek");

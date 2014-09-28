@@ -22,12 +22,11 @@ Check the correctnes with tests:
    PetStoreMappingTest.identifierMaxLenIs10
    PetStoreMappingTest.uniqueTextIdentifier 
 
-**Task 05** Embedded mapping. Create Embeddable class Address and map it using annotation @Embedded as a part of the PetStore (its commented out in the PetStore entity right now). Run test embeddedAddressTest  
+**Task 05** Embedded mapping. Create Embeddable class Address and map it using annotation @Embedded as a part of the PetStore (its commented out in the PetStore entity right now). Uncomment code that is commented out in test  embeddedAddressTest  and then run the test
 
 **Task 06** Embedded element collection mapping. Add a collection "Set<Address> previousAddresses" to the PetStore. Do not map this as one to many but instead use ElementCollection and reuse the Address that you created in **Task 05**
 Also set fetch type to "fetch=FetchType.EAGER" so that the previous addresses are always fetched together with a PetStore
-
-Run test embeddedOldAddressesTest
+Again uncomment the code in embeddedOldAddressesTest and run the test
 
 **Task 07** Map the following fields: dateOfOpening, openTime,closeTime. The first one should store only date (e.g. 24-9-2014) and the former ones should store only the time information (e.g. 13:30:44) 
 Run tests dateOfOpeningHasNoTime, openTimeAndCloseTimeHasNoDate

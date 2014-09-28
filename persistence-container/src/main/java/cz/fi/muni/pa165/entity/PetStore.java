@@ -4,16 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  * Represents a building that is a PetStore. A PetStore contains many Cages and those cages include Pets.
@@ -32,13 +23,13 @@ public class PetStore {
 	 */
 	private String textIdentifier;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Transient
 	private Date dateOfOpening;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Transient
 	private Date openTime;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Transient
 	private Date closeTime;
 	
 //	@OneToMany(mappedBy="petStore")
@@ -47,21 +38,17 @@ public class PetStore {
 	/**
 	 * Attributes of the embedded class will be part of the resulting entity
 	 */
-	private Address address;
+//	private Address address;
 	
 	/**
 	 * This should be ElementCollection. Not OneToMany! Note that the ElementCollection will
 	 * inevitably create a new database table. However, you won't have direct access to the 
 	 * Embeddable ElementCollection. 
 	 */
+	@Transient
 	private Set<Address> previousAddresses = new HashSet<Address>();
 	
-	public Address getAddress() {
-		return address;
-	}
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+
 	public Set<Address> getPreviousAddresses() {
 		return previousAddresses;
 	}
