@@ -22,17 +22,16 @@ Check the correctnes with tests:
    PetStoreMappingTest.identifierMaxLenIs10
    PetStoreMappingTest.uniqueTextIdentifier 
 
-**Task 05** Embedded mapping. Create Embeddable class Address and map it using annotation @Embedded as a part of the PetStore. Run test embeddedAddressTest  
+**Task 05** Embedded mapping. Create Embeddable class Address and map it using annotation @Embedded as a part of the PetStore (its commented out in the PetStore entity right now). Uncomment code that is commented out in test  embeddedAddressTest  and then run the test
 
 **Task 06** Embedded element collection mapping. Add a collection "Set<Address> previousAddresses" to the PetStore. Do not map this as one to many but instead use ElementCollection and reuse the Address that you created in **Task 05**
 Also set fetch type to "fetch=FetchType.EAGER" so that the previous addresses are always fetched together with a PetStore
-
-Run test embeddedOldAddressesTest
+Again uncomment the code in embeddedOldAddressesTest and run the test
 
 **Task 07** Map the following fields: dateOfOpening, openTime,closeTime. The first one should store only date (e.g. 24-9-2014) and the former ones should store only the time information (e.g. 13:30:44) 
 Run tests dateOfOpeningHasNoTime, openTimeAndCloseTimeHasNoDate
 
-**Task 08**  This task requires you to work with LoadStateTest.java. There is a comment in the eagerFetchTest that requires you to add a new assert. Add it.
+**Task 08**  This task requires you to work with LoadStateTest.java.  There is a comment in the eagerFetchTest that requires you to add a new assert. Firstly enable the test (@Test(enabled=true))and then add the assert.
 
 Run the test, you should get a assert Exception
 
@@ -41,20 +40,20 @@ java.lang.AssertionError: expected [LOADED] but found [NOT_LOADED]
 ```
 
 **Task 09** Now you know that the cages collection is not loaded. To pass the assert you created you need to change the fetch type for the cages association to EAGER, do it and rerun the test.
-It will still fail because the test traverses all the pets in the cages. Fix this by adding eager fecth also on the that association.
+It will still fail because the test traverses all the pets in the cages. Fix this by adding eager fecth also on that association.
 
 **Task 10** Now the test eagerFetchTest passes. Answer these questions: How many queries are sent to the database? How many entities are retrieved from the database during this test?
 
-**Task 11** Eager fetching on the associations such as OneToMany are very usually a bad practice. Remove EAGER fetch from PetStore.cages and Cage.pets. Disable the eagerFetchTest (use @Test(enabled=false)) and implement two unit tests in LoadStateTests that will check that after loading a Cage or a PetStore, the collections are not loaded.
+**Task 11** Eager fetch setting on the associations such as OneToMany are very usually a bad practice. Remove EAGER fetch from PetStore.cages and Cage.pets. Disable the eagerFetchTest (use @Test(enabled=false)) and implement two unit tests in LoadStateTests that will check that after loading a Cage or a PetStore, the collections are not loaded.
  
 
 **Task 12** This task requires you to work with EntityLifecycleTest. You can see that entityDetachTest fails. We modify detached entity by setting name "Honza" and we would like that to propagate into the database. Use EntityManager.merge method instead of the comment "//ASSOCIATE HERE" to get the name changed in the database 
 
-**Task 13** Change the name again to "Marek" on line commented with "//CHANGE MANAGED ENTITY HERE", as you can see the changes will be propagated into the database because the entity is in MANAGED state.  
+**Task 13** Change the name again to "Marek" on line commented with "//CHANGE MANAGED ENTITY HERE". Be careful, the merge method that you used in **Task 12** will NOT MAKE the argument that you passed to the merge method MANAGED. The merge method RETURNS a new instance that is MANAGED. If you done everything correctly, can see the changes will be propagated into the database because the entity is in MANAGED state.  
 
 **Task 14** Modify the entityRemove test on line marked "		//DELETE THE PET HERE". Delete the pet with id "pet1Id". The test should pass after your changes.
 
-**Task 15**  JPQL. You will work with JpqlTest.java. Your task is to fix all the tests by only rewriting the JPQL queries (the JPQL query is the argument in every em.createQuery method). 
+**Task 15**  JPQL. You will work with JpqlTest.java. Your task is to fix all the tests by only rewriting the JPQL queries (the JPQL query is the argument in every em.createQuery method). There are lot of hints in the comments in the test methods. When solving each test method read them carefully. 
 
 **Task 16**  Cascading. Many operations in JPA (e.g. persisting, removal) can be cascaded, meaning that the operation is propagated through a relation. You will work with test EntityLifecycleTest.persistCascade. When you run the test you should see the following problem:
 
