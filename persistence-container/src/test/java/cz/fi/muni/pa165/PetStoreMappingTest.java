@@ -32,9 +32,6 @@ public class PetStoreMappingTest  extends AbstractTestNGSpringContextTests
 {
 	@PersistenceUnit
 	public EntityManagerFactory emf;
-	private long pet1Id;
-	 
-	
 	
 	@Test
 	public void testSimplePersist() {	
@@ -49,8 +46,6 @@ public class PetStoreMappingTest  extends AbstractTestNGSpringContextTests
 		
 	}
 
-	
-	
 	@Test
 	public void dateOfOpeningHasNoTime() {	
 		EntityManager em = emf.createEntityManager();
@@ -99,8 +94,6 @@ public class PetStoreMappingTest  extends AbstractTestNGSpringContextTests
 		Assert.assertEquals(closeTime.get(Calendar.MONTH),0);
 	}
 
-
-
 	
 	@Test
 	public void embeddedAddressTest() {	
@@ -122,7 +115,6 @@ public class PetStoreMappingTest  extends AbstractTestNGSpringContextTests
 		Assert.assertEquals(fromDb.getAddress().getCity(),"Brno");
 		assertContainsAnnotation(PetStore.class,"address", Embedded.class);
 	}
-
 
 	
 	@Test
@@ -159,36 +151,6 @@ public class PetStoreMappingTest  extends AbstractTestNGSpringContextTests
 		assertContainsAnnotation(PetStore.class,"previousAddresses", ElementCollection.class);
 	}
 
-
-
-	private void assertContainsAnnotation(Class<?> clazz,
-			String fieldName, Class<?> annotationClass) {
-		HashSet<Annotation> annotations = null;
-		boolean found = false;
-		try {
-			Field f = clazz.getDeclaredField(fieldName);
-			
-			Assert.assertNotNull(f,"You removed field "+fieldName+" from the class. it should be present");
-			
-			
-			for (Annotation annotation : f.getAnnotations()){
-				
-				if (annotation.annotationType().equals(annotationClass)) {
-					found = true;
-				}
-			}
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Assert.assertTrue(found,"The annotation "+annotationClass+" was not found on field " + fieldName);
-	}
-
-
-
 	@Test(expectedExceptions=PersistenceException.class, expectedExceptionsMessageRegExp=".+DataException.+")
 	public void identifierMaxLenIs10() {	
 		EntityManager em = emf.createEntityManager();
@@ -214,6 +176,32 @@ public class PetStoreMappingTest  extends AbstractTestNGSpringContextTests
 		em.getTransaction().commit();
 		em.close();
 		
+	}
+
+	private void assertContainsAnnotation(Class<?> clazz,
+			String fieldName, Class<?> annotationClass) {
+		HashSet<Annotation> annotations = null;
+		boolean found = false;
+		try {
+			Field f = clazz.getDeclaredField(fieldName);
+			
+			Assert.assertNotNull(f,"You removed field "+fieldName+" from the class. it should be present");
+			
+			
+			for (Annotation annotation : f.getAnnotations()){
+				
+				if (annotation.annotationType().equals(annotationClass)) {
+					found = true;
+				}
+			}
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Assert.assertTrue(found,"The annotation "+annotationClass+" was not found on field " + fieldName);
 	}
 
 

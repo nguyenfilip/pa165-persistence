@@ -61,15 +61,25 @@ public class EntityLifecycleTest  extends AbstractTestNGSpringContextTests
 		em.getTransaction().commit();
 		em.close();
 		
+		/**
+		 * Modification of detached entity
+		 */
 		pet.setName("Honza");
 		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		
+		/**
+		 * Here the pet should be associated with em again. 
+		 * In other words, it should get into MANAGED state again.
+		 */
+		//ASSOCIATE HERE
 		pet = em.merge(pet);
 		
 		Pet petFromDb = em.find(Pet.class, pet1Id);
 		Assert.assertEquals(petFromDb.getName(),"Honza");
+		
+		//CHANGE MANAGED ENTITY HERE
 		pet.setName("Marek");
 		
 		petFromDb = em.find(Pet.class, pet1Id);
@@ -88,8 +98,10 @@ public class EntityLifecycleTest  extends AbstractTestNGSpringContextTests
 		long size = (Long)em.createQuery("SELECT COUNT(p) FROM Pet p").getSingleResult();
 		Assert.assertEquals(size,1);
 		
+		//DELETE THE PET HERE
 		Pet p = em.find(Pet.class, pet1Id);
 		em.remove(p);
+		
 		size = (Long)em.createQuery("SELECT COUNT(p) FROM Pet p").getSingleResult();
 		Assert.assertEquals(size,0);
 		em.getTransaction().commit();
@@ -97,4 +109,20 @@ public class EntityLifecycleTest  extends AbstractTestNGSpringContextTests
 		
 	}
 	
+	
+	@Test
+	public void persistCascade(){
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+		Cage c = new Cage();
+		c.setDescription("My new cage!");
+		Pet p = new Pet();
+		p.setName("Jirka");
+		p.setCage(c);
+		
+		em.persist(p);
+		em.getTransaction().commit();
+		em.close();
+	}
 }

@@ -3,6 +3,12 @@ package cz.fi.muni.pa165;
 import cz.fi.muni.pa165.entity.Cage;
 import cz.fi.muni.pa165.entity.Pet;
 
+/**
+ * This is a class just for convenient retrieval of pairs Cage, Pet.
+ * 
+ * @author Filip Nguyen
+ *
+ */
 public class CageAndPet {
 	private Cage cage;
 	private Pet pet;

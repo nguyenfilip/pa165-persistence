@@ -26,6 +26,10 @@ public class DaoContext {
 		return  new JpaTransactionManager(jpaFactoryBean().getObject());
 	}
 	
+	/**
+	 * Starts up a container that emulates behavior prescribed in JPA spec for container-managed EntityManager
+	 * @return
+	 */
 	@Bean
 	public LocalContainerEntityManagerFactoryBean  jpaFactoryBean(){
 		LocalContainerEntityManagerFactoryBean jpaFactoryBean = new LocalContainerEntityManagerFactoryBean ();

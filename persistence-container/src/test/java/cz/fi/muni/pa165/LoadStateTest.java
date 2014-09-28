@@ -75,6 +75,7 @@ public class LoadStateTest  extends AbstractTestNGSpringContextTests
 		cage3.setDescription("Luxury cage");
 		
 		PetStore ps = new PetStore();
+		ps.setTextIdentifier("AFZ");
 		
 		pet1.setCage(cage1);
 		pet2.setCage(cage2);
@@ -104,7 +105,8 @@ public class LoadStateTest  extends AbstractTestNGSpringContextTests
 	}
 	
 	
-	@Test
+
+	@Test(enabled=false)
 	public void eagerFetchTest() {	
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -112,6 +114,9 @@ public class LoadStateTest  extends AbstractTestNGSpringContextTests
 		em.getTransaction().commit();
 		em.close();
 		
+		/**
+		 * Add Assert.assertEquals here. Use PersistenceUtilHelper to find out whether the cages collection on the PetStore is in LoadState.LOADED
+		 */
 		Assert.assertEquals(PersistenceUtilHelper.isLoaded(petStoreFromDb.getCages()),LoadState.LOADED);
 		
 		for (Cage c : petStoreFromDb.getCages()){
@@ -119,6 +124,31 @@ public class LoadStateTest  extends AbstractTestNGSpringContextTests
 				System.out.println(p.getName());
 			}
 		}
+		
+	}
+	
+	@Test
+	public void lazyFetchCages() {	
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		PetStore petStoreFromDb = em.find(PetStore.class, petStoreId);
+		em.getTransaction().commit();
+		em.close();
+		
+		Assert.assertEquals(PersistenceUtilHelper.isLoaded(petStoreFromDb.getCages()),LoadState.NOT_LOADED);
+		
+	}
+	
+	@Test
+	public void lazyFetchPets() {	
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		PetStore petStoreFromDb = em.find(PetStore.class, petStoreId);
+		Cage c = petStoreFromDb.getCages().iterator().next();
+		em.getTransaction().commit();
+		em.close();
+		
+		Assert.assertEquals(PersistenceUtilHelper.isLoaded(c.getPets()),LoadState.NOT_LOADED);
 		
 	}
 	

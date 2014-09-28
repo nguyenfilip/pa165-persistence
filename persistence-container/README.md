@@ -1,82 +1,79 @@
- * read PetStore docs
- * use Column annotation
- * run test from command line  
- * @Basic (optional)
- * @Transient  
- * @Column (unique, nullable)
- * @ElementCollection
- * @Embeddable, @Embedded
- * @Enumerated
- * @GeneratedValue
- * @JoinTable - ManyToMany
- * @Temporal
- * @UniqueConstraint      
- *
- * Quiz
- *     The optional element is a hint as to whether the value of the field or property may be null. It is disregarded
-for primitive types.    
+## Persistence Seminar 02 30.9.2014
+In this seminar you will reuse your knowledge of mapping and you will extend it a bit. 
+Most of the seminar is dedicated to gain more confidence with JPQL and Entity States.
+Everything that you will do in the second seminar is related to persistence-container maven module. 
 
+**Task 01** All the assignements of this seminar will require you to work with unit tests. You need to know how to run a unit test from IDE and also from the command line. First run the following single test method from the IDE:  JpqlTest.findPets()
 
-## Persistence Seminar 02 30.9.2014 
-Your first tasks will be related to module persistence-app. It will teach you basic work with JPA in Java SE application. 
+It should pass 
+```
+Default suite
+Total tests run: 1, Failures: 0, Skips: 0
+```  
 
-**Task 01** Your first task is to locate and download JPA 2.1 specification (JSR 338). It is a PDF file. 
-   
-**Task 02** Try to run cz.fi.muni.pa165.AppMain from NetBeans 
+**Task 02** Try to run the test from **Task 01** through Maven from command line. To do this you should use "mvn test" command with a correct parameter. Find the parameter in maven documentation http://maven.apache.org/surefire/maven-surefire-plugin/test-mojo.html   
 
-**Task 03** Run the main method also  from command line (using Maven exec:java 
-target) see documentation for Maven here http://mojo.codehaus.org/exec-maven-plugin/java-mojo.html
+Obviously you should get the same result as in **Task 01**
 
-**Task 04** Add configuration property to persistence.xml so that Hibernate writes all generated SQL statements to console. See A.2 section of
-https://docs.jboss.org/hibernate/orm/4.3/devguide/en-US/html_single/ . Rerun **Task 03** to confirm that you can now see the SQL
+**Task 03** There is a new entity in the project PetStore. Map it as an entity and check that it can be stored in the database by running test PetStoreMappingTest.testSimplePersist 
 
-**Task 05** Modify AppMain method. Create two more pets to be stored in the database and persist them. Rerun **Task 03**
+**Task 04** Uniqueness. Add new field String textIdentifier to the PetStore, there is a Java doc in the PetStore.java that explains the requirements for this field.
+Check the correctnes with tests: 
+   PetStoreMappingTest.identifierMaxLenIs10
+   PetStoreMappingTest.uniqueTextIdentifier 
 
-**Task 06** Our application can store Pets. However, the pets cannot be yet assigned to Cages. The persistence-app project contains cz.fi.muni.pa165.entity.Cage class that should represent the Cage entity. However JPA annotations are missing. Add the annotations. For now, leave the "private Cage cage" field and do not map or modify it.
+**Task 05** Embedded mapping. Create Embeddable class Address and map it using annotation @Embedded as a part of the PetStore. Run test embeddedAddressTest  
 
-**Task 07** Verify that a Cage can be created, stored and retrieved from the database. To do this, persist two cages and implement new method AppMain.findAllCages(EntityManagerFactory emf). 
+**Task 06** Embedded element collection mapping. Add a collection "Set<Address> previousAddresses" to the PetStore. Do not map this as one to many but instead use ElementCollection and reuse the Address that you created in **Task 05**
+Also set fetch type to "fetch=FetchType.EAGER" so that the previous addresses are always fetched together with a PetStore
 
-**Task 08** Wait. There is a bug in Cage entity. Its a nasty one, because our application works well so far. I belive you will find the bug if you take a look into specification. Some methods that JPA specification requires are missing. Hint: look through bulletpoints on page 30 in the specification (section 2.4).
+Run test embeddedOldAddressesTest
 
-**Task 09** Adding relationships. Now we have cages and we have Pets. We would 
-like to assign a Cage to a Pet. To be able to do so you need to map the relationship. In Pet entity, remove @Transient and replace it with @ManyToOne. Rerun **Task 03** to verify everything works fine so far. Now in your main method use setCage on some of your pets to add the Pet to the Cage. 
+**Task 07** Map the following fields: dateOfOpening, openTime,closeTime. The first one should store only date (e.g. 24-9-2014) and the former ones should store only the time information (e.g. 13:30:44) 
+Run tests dateOfOpeningHasNoTime, openTimeAndCloseTimeHasNoDate
 
-**Task 10** To understand transient instances, try code such as this: 
-```java
-		em.getTransaction().begin();
-		Pet pet = new Pet();
-		pet.setName("Small Rat");
-		Cage cage = new Cage();
-		cage.setDescription("SMALL CAGE");
-		pet.setCage(cage);
-		em.persist(pet);
-		em.getTransaction().commit();
+**Task 08**  This task requires you to work with LoadStateTest.java. There is a comment in the eagerFetchTest that requires you to add a new assert. Add it.
+
+Run the test, you should get a assert Exception
+
+java.lang.AssertionError: expected [LOADED] but found [NOT_LOADED] 
+
+**Task 09** Now you know that the cages collection is not loaded. To pass the assert you created you need to change the fetch type for the cages association to EAGER, do it and rerun the test.
+It will still fail because the test traverses all the pets in the cages. Fix this by adding eager fecth also on the that association.
+
+**Task 10** Now the test eagerFetchTest passes. Answer these questions: How many queries are sent to the database? How many entities are retrieved from the database during this test?
+
+**Task 11** Eager fetching on the associations such as OneToMany are very usually a bad practice. Remove EAGER fetch from PetStore.cages and Cage.pets. Disable the eagerFetchTest (use @Test(enabled=false)) and implement two unit tests in LoadStateTests that will check that after loading a Cage or a PetStore, the collections are not loaded.
+ 
+
+**Task 12** This task requires you to work with EntityLifecycleTest. You can see that entityDetachTest fails. We modify detached entity by setting name "Honza" and we would like that to propagate into the database. Use EntityManager.merge method instead of the comment "//ASSOCIATE HERE" to get the name changed in the database 
+
+**Task 13** Change the name again to "Marek" on line commented with "//CHANGE MANAGED ENTITY HERE", as you can see the changes will be propagated into the database because the entity is in MANAGED state.  
+
+**Task 14** Modify the entityRemove test on line marked "		//DELETE THE PET HERE". Delete the pet with id "pet1Id". The test should pass after your changes.
+
+**Task 15**  JPQL. You will work with JpqlTest.java. Your task is to fix all the tests by only rewriting the JPQL queries (the JPQL query is the argument in every em.createQuery method). 
+
+**Task 16**  Cascading. Many operations in JPA (e.g. persisting, removal) can be cascaded, meaning that the operation is propagated through a relation. You will work with test EntityLifecycleTest.persistCascade. When you run the test you should see the following problem:
+
+```
+object references an unsaved transient instance - save the transient instance before flushing
 ```
 
-You will get TransientPropertyValueException. Why is that? Its because your Cage is not persisted. Fix this.
+The reason is that we havent persisted the Cage. However, because the Pet is the owning side of the relationship, we can set PERSIST cascading to make this code work. Go to Pet.cage field and change the annotation to this: @ManyToOne(cascade=CascadeType.PERSIST).
 
-**Task 11** We now can set a Cage for a Pet. Let's output this fact to the console. Modify your AppMain.printAllPets to not only show all Pets but also for each Pet print out the cage in which it is accomodated.
-
-**Task 12** Perfect, now we have unidirectional relationship where Pet has a reference to a Cage. We would like to create this relationship bidirectional (so that Cage also knows all Pets in itself). Open Cage entity and remove @Transient annotation. Instead add @OneToMany(mappedBy="cage").
-
-**Task 13** Make sure that in your main method you create at least 2 Cages and at least 4 Pets and that you distribute these Pets among the Cages. 
-
-**Task 14** Modify your AppMain.printAllCages to print all pets in the Cage.
-
-**Task 15** Make sure you maintain runtime consistency of your relationships. 
-It means that when you add a cage to a pet through Pet.setCage() method, you also add the Pet to the collection held in the Cage entity. In other words, you maintain the relationship from both sides. This is very important and JPA spec requires the developer to do this!
-
-**Task 16** You can see that the output shows that Pets have birthDate also with time. This information is really not necessary. Change the annotation on birthDate field in Pet so that the date is stored in the database only witth Year, Month, Date components.  
+Then try to run the test. 
 
 **Task 17** Quiz. You can check your answers after you take the quiz in file answ-q1.md 
- 1. What is owning side of a relationship? Read through JPA spec, section 2.9 to answer this question. 
- 2. Which side of the relationshiop in our example is the owning side?
- 3. What is the main configuration file for JPA in your application?
- 4. Where is the following text used and what is the effect of it (use Hibernate dev guide to find answer)? "hibernate.format_sql"
- 5. What is hibernate.hbm2ddl.auto property in persistence.xml file?
+ 1. What kind of cascading types exist?
+ 2. What happens when you change some property on entity after EntityManager.close() method is called? 
+ 3. What happens if you change some property and entity is in the state MANAGED?
+ 4. Where is it possible to change connection string to a database that you want to access through JPA?
+ 5. The JPQL is purely string based. This may be dangerous sometimes. Is there any way to mitigate this and use some more statically typed API?
+ 6. Assume there are three entities in your application: Company, Order, Item. The Company places many orders and each order consists of many items. There are 3 companies in the database first two have 100 orders each and the last has 30 orders. Each order contains approximatelly 50 line items. Bidirectional JPA relationships are set up among the entities. Suppose somebody issues the following JPQL query "SELECT c FROM Company c". How many line items will be retrieved by this simple query from the actual database immediatelly after calling getResultList()?
 
  
-**Task 18** As homework, solve the following https://is.muni.cz/auth/el/1433/podzim2014/PA165/um/cv/2012_PA165_cv02.pdf in a new Java project. Consider downloading the .pdf file in case you are not able to copy the xml snippet from the browser pdf reader.
+**Task 18** As homework, solve the following https://is.muni.cz/auth/el/1433/podzim2014/PA165/um/cv/2012_PA165_cv03.pdf in a new Java project. Consider downloading the .pdf file in case you are not able to copy the xml snippet from the browser pdf reader. You can skip the last task "Criteria API"
  
 
 

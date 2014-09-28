@@ -27,6 +27,11 @@ public class PetStore {
 	@GeneratedValue
 	private long id = 0;
 	
+	/**
+	 * textIdentifier is a String that uniquelly identifies a PetStore e.g. "PSBRN1"
+	 * The max lenght of this identifier is 10 characters and the identifier cannot be null
+	 *  
+	 */
 	@Column(unique=true, length=10,nullable=false)
 	private String textIdentifier;
 	
@@ -42,6 +47,9 @@ public class PetStore {
 	@OneToMany(mappedBy="petStore")
 	private Set<Cage> cages = new HashSet<Cage>();
 	
+	/**
+	 * Attributes of the embedded class will be part of the resulting entity
+	 */
 	@Embedded
 	private Address address;
 	

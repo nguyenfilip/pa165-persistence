@@ -78,6 +78,16 @@ public class JpqlTest  extends AbstractTestNGSpringContextTests
 		em.close();
 	}
 	
+	
+	@Test
+	public void findPets(){
+		EntityManager em = emf.createEntityManager();
+		List<Pet> pets = em.createQuery("SELECT p FROM Pet p", Pet.class).getResultList();
+		em.close();
+		
+		Assert.assertEquals(pets.size(), 3);
+	}
+	
 	@Test
 	public void fetchJoinCagesWithPets() {
 		EntityManager em = emf.createEntityManager();
@@ -141,7 +151,7 @@ public class JpqlTest  extends AbstractTestNGSpringContextTests
 	@Test
 	public void findCatStefan() {
 		EntityManager em = emf.createEntityManager();
-		Pet pet = em.createQuery("FROM Pet p WHERE p.name ='STEFAN'",Pet.class).getSingleResult();
+		Pet pet = em.createQuery("FROM Pet p WHERE p.name ='Stefan'",Pet.class).getSingleResult();
 		em.close();
 		
 		Assert.assertEquals(pet.getName(), "Stefan");

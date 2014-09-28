@@ -3,6 +3,7 @@ package cz.fi.muni.pa165.entity;
 import java.util.Date;
 import java.util.HashSet;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -30,7 +31,7 @@ public class Pet {
 	@Column(nullable=false)
 	private String name;
 	
-	@ManyToOne()
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Cage cage = null;
 	
 	@Enumerated(EnumType.STRING)
