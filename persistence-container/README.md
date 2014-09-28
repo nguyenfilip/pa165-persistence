@@ -36,7 +36,9 @@ Run tests dateOfOpeningHasNoTime, openTimeAndCloseTimeHasNoDate
 
 Run the test, you should get a assert Exception
 
+```
 java.lang.AssertionError: expected [LOADED] but found [NOT_LOADED] 
+```
 
 **Task 09** Now you know that the cages collection is not loaded. To pass the assert you created you need to change the fetch type for the cages association to EAGER, do it and rerun the test.
 It will still fail because the test traverses all the pets in the cages. Fix this by adding eager fecth also on the that association.
