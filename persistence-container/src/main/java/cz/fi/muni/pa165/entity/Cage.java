@@ -25,7 +25,7 @@ public class Cage {
 	@OneToMany(mappedBy="cage")
 	private Set<Pet> pets = new HashSet<Pet>();
 
-	@ManyToOne
+//	@ManyToOne
 	private PetStore petStore;
 	
 	

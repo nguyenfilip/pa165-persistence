@@ -88,22 +88,35 @@ public class JpqlTest  extends AbstractTestNGSpringContextTests
 		Assert.assertEquals(pets.size(), 3);
 	}
 	
+	/**
+	 * The task is to find all cages and instruct the JPA to fetch all Pets for every such cage. Thanks to this
+	 * it will be possible to work with the pets even after the EntityManager closes.
+	 * 
+	 * This test basically checks whether the pets are LOADED. You are expected to change the JPQL
+	 * query so that c.pets are loaded. This is done by so called FETCH JOIN, take a look into 
+	 * JPA spec for the syntax. 
+	 */
 	@Test
 	public void fetchJoinCagesWithPets() {
 		EntityManager em = emf.createEntityManager();
-		List<Cage> cages = em.createQuery("SELECT c FROM Cage c JOIN FETCH c.pets", Cage.class).getResultList();
+		List<Cage> cages = em.createQuery("SELECT c FROM Cage c JOIN c.pets", Cage.class).getResultList();
 		em.close();
 		
+	
 		for (Cage cage : cages)
 			Assert.assertEquals(PersistenceUtilHelper.isLoaded(cage.getPets()),LoadState.LOADED);
 	}
 	
+	/**
+	 * This test shows how to use group by to find number of pets by color. The group by part of the
+	 * query is missing.
+	 */
 	@Test
 	public void groupBy() {
 		EntityManager em = emf.createEntityManager();
 		List<Object[]> pets = em
 				.createQuery(
-						"SELECT p.color, count(p) FROM Pet p GROUP BY p.color ORDER BY p.color")
+						"SELECT p.color, count(p) FROM Pet ORDER BY p.color")
 				.getResultList();
 		em.close();
 		
@@ -115,10 +128,18 @@ public class JpqlTest  extends AbstractTestNGSpringContextTests
 		
 	}
 	
+	/**
+	 * This test is very similar to groupBy. The only difference is that you are expected to produce something
+	 * more practical than Object[] as was the case in groupBy 
+	 * 
+	 * In this query more things are missing. First thing is the group by clause. The second
+	 * thing missing is so called SELECT NEW construct. You should consult JPA spec and then use SELECT NEW with 
+	 * PetsByColorDTO class (look up the constructor of the class).
+	 */
 	@Test
 	public void groupBySelectNew() {
 		EntityManager em = emf.createEntityManager();
-		List<PetsByColorDTO> petsByColor = em.createQuery("SELECT NEW cz.fi.muni.pa165.dto.PetsByColorDTO(p.color, count(p)) FROM Pet p GROUP BY p.color ORDER BY p.color",PetsByColorDTO.class).getResultList();
+		List<PetsByColorDTO> petsByColor = em.createQuery("SELECT FROM Pet p ORDER BY p.color",PetsByColorDTO.class).getResultList();
 		em.close();
 
 		Assert.assertEquals(petsByColor.get(0).getColor(), PetColor.RED);
@@ -127,20 +148,29 @@ public class JpqlTest  extends AbstractTestNGSpringContextTests
 		Assert.assertEquals(petsByColor.get(1).getPetCount(), new Long(1));
 	}
 	
+	/**
+	 * This should be easy one. There is a bug in the query, try to read the exception carefully and find out what is wrong.
+	 */
 	@Test
 	public void findAllPets() {
 		EntityManager em = emf.createEntityManager();
-		List<Pet> pets = em.createQuery("SELECT p FROM Pet p",Pet.class).getResultList();
+		List<Pet> pets = em.createQuery("SELECT Pet FROM Pet",Pet.class).getResultList();
 		em.close();
 		
 		Assert.assertEquals(pets.size(), 3);
 	}
 	
 
+	/**
+	 * Your task is to find all Pets in the database using so called Named Query.
+	 * 
+	 * Showcase how to use named query, the createNamedQuery in this test shouldn't have null as the first argument.
+	 * Hint: look at annotations above Pet entity, you should deduce what the first argument for the createNamedQuery should be
+	 */
 	@Test
 	public void findAllPetsNamedQuery() {
 		EntityManager em = emf.createEntityManager();
-		List<Pet> pets = em.createNamedQuery("findAll",Pet.class).getResultList();
+		List<Pet> pets = em.createNamedQuery(null,Pet.class).getResultList();
 		em.close();
 		
 		Assert.assertEquals(pets.size(), 3);
@@ -148,30 +178,46 @@ public class JpqlTest  extends AbstractTestNGSpringContextTests
 	
 	
 	
+	/**
+	 * This query should produce only 1 cat, the one with name 'Stefan', as you can see the WHERE clause is missing.
+	 */
 	@Test
 	public void findCatStefan() {
 		EntityManager em = emf.createEntityManager();
-		Pet pet = em.createQuery("FROM Pet p WHERE p.name ='Stefan'",Pet.class).getSingleResult();
+		Pet pet = em.createQuery("SELECT p FROM Pet p'",Pet.class).getSingleResult();
 		em.close();
 		
 		Assert.assertEquals(pet.getName(), "Stefan");
 	}
 	
+	/**
+	 * The task is to count number of pets in the database.
+	 * 
+	 * This query should produce only 1 number. We call such queries scalar queries. You should use the COUNT function
+	 * to get the result needed by the Assert in this test.
+	 */
 	@Test
 	public void countPets() {
 		EntityManager em = emf.createEntityManager();
-		Long count = em.createQuery("SELECT COUNT(p) FROM Pet p",Long.class).getSingleResult();
+		Long count = em.createQuery("SELECT p FROM Pet p",Long.class).getSingleResult();
 		em.close();
 		
 		Assert.assertEquals(count, new Long(3));
 	}
 	
 	
-	
+	/**
+	 * Your task is to find cages that have no pets in it.
+	 * 
+	 * This test requires you to find out syntax of negated EMPTY operator that is part of JPQL syntax.
+	 * Note this is something new, not presnet in SQL dialects. Its really object oriented way of querying, because the query
+	 * basically says "find those cages that have non empty cages.pets collection". Consult the JPA spec to
+	 * get the syntax right. 
+	 */
 	@Test
 	public void findAllNonEmptyCages() {
 		EntityManager em = emf.createEntityManager();
-		List<Cage> cages = em.createQuery("SELECT c FROM Cage c WHERE c.pets IS NOT EMPTY",Cage.class).getResultList();
+		List<Cage> cages = em.createQuery("SELECT c FROM Cage c WHERE c.pets IS",Cage.class).getResultList();
 		em.close();
 		
 		Assert.assertEquals(cages.size(), 1);
@@ -179,12 +225,19 @@ public class JpqlTest  extends AbstractTestNGSpringContextTests
 	}
 	
 	/**
+	 * Your task is to find all touples (Cage, Pet) such that every cage is listed (even if they have no pets) and you are looking only
+	 * for the pets 'Filip'. To do so you are required to use the LEFT JOIN.
+	 * 
 	 * The LEFT JOIN semantics together with ON keyword is fairly complicated. See JPA spec section 4.4.5.2
+	 * 
+	 * This query will test lot of your skills and also understanding. The LEFT JOIN is very similar to SQL LEFT JOIN. To get the results 
+	 * that pass asserts in this test you will need to use ON clause and also use the SELECT NEW again
+	 * 
 	 */
 	@Test
 	public void leftJoinCagesWithPets() {
 		EntityManager em = emf.createEntityManager();
-		List<CageAndPet> cageAndPet = em.createQuery("SELECT NEW cz.fi.muni.pa165.CageAndPet(c,p) FROM Cage c LEFT JOIN c.pets p ON p.name= 'Filip'",CageAndPet.class).getResultList();
+		List<CageAndPet> cageAndPet = em.createQuery("SELECT NEW  FROM Cage c LEFT JOIN c.pets p",CageAndPet.class).getResultList();
 		
 		Assert.assertEquals(cageAndPet.size(), 2);
 		
@@ -204,11 +257,17 @@ public class JpqlTest  extends AbstractTestNGSpringContextTests
 	}
 	
 	
+	/**
+	 * This test requires you not only to fix JPQL query but also to use setParameter method on the created query.
+	 * 
+	 * Your task is to find the Pets that has been born today.
+	 * 
+	 * To do so you should use a named parameter (e.g. :date) and you should set the paraemeter as an object.
+	 */
 	@Test
 	public void findPetsBornToday() {
-		
 		EntityManager em = emf.createEntityManager();
-		List<Pet> pets = em.createQuery("FROM Pet p WHERE p.birthDate = :date",Pet.class).setParameter("date", new Date()).getResultList();
+		List<Pet> pets = em.createQuery("SELECT p FROM Pet p WHERE ",Pet.class).getResultList();
 		em.close();		
 	
 		Assert.assertEquals(pets.size(),1);

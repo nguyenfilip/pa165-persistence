@@ -21,39 +21,39 @@ import javax.persistence.TemporalType;
  * @author Filip Nguyen
  *
  */
-@Entity
+
 public class PetStore {
-	@Id
-	@GeneratedValue
 	private long id = 0;
 	
 	/**
-	 * textIdentifier is a String that uniquelly identifies a PetStore e.g. "PSBRN1"
-	 * The max lenght of this identifier is 10 characters and the identifier cannot be null
+	 * textIdentifier is a String that uniquely identifies a PetStore e.g. "PSBRN1"
+	 * The max length of this identifier is 10 characters and the identifier cannot be null
 	 *  
 	 */
-	@Column(unique=true, length=10,nullable=false)
 	private String textIdentifier;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateOfOpening;
 	
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date openTime;
 	
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date closeTime;
 	
-	@OneToMany(mappedBy="petStore")
+//	@OneToMany(mappedBy="petStore")
 	private Set<Cage> cages = new HashSet<Cage>();
 	
 	/**
 	 * Attributes of the embedded class will be part of the resulting entity
 	 */
-	@Embedded
 	private Address address;
 	
-	@ElementCollection(fetch=FetchType.EAGER)
+	/**
+	 * This should be ElementCollection. Not OneToMany! Note that the ElementCollection will
+	 * inevitably create a new database table. However, you won't have direct access to the 
+	 * Embeddable ElementCollection. 
+	 */
 	private Set<Address> previousAddresses = new HashSet<Address>();
 	
 	public Address getAddress() {
@@ -108,26 +108,5 @@ public class PetStore {
 	public void addPreviousAddress(Address previous) {
 		previousAddresses.add(previous);
 	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		return result;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PetStore other = (PetStore) obj;
-		if (id != other.id)
-			return false;
-		return true;
-	}
+
 }

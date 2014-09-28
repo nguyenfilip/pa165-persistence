@@ -74,7 +74,6 @@ public class EntityLifecycleTest  extends AbstractTestNGSpringContextTests
 		 * In other words, it should get into MANAGED state again.
 		 */
 		//ASSOCIATE HERE
-		pet = em.merge(pet);
 		
 		Pet petFromDb = em.find(Pet.class, pet1Id);
 		Assert.assertEquals(petFromDb.getName(),"Honza");
@@ -99,8 +98,6 @@ public class EntityLifecycleTest  extends AbstractTestNGSpringContextTests
 		Assert.assertEquals(size,1);
 		
 		//DELETE THE PET HERE
-		Pet p = em.find(Pet.class, pet1Id);
-		em.remove(p);
 		
 		size = (Long)em.createQuery("SELECT COUNT(p) FROM Pet p").getSingleResult();
 		Assert.assertEquals(size,0);

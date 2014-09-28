@@ -45,16 +45,16 @@ It will still fail because the test traverses all the pets in the cages. Fix thi
 
 **Task 10** Now the test eagerFetchTest passes. Answer these questions: How many queries are sent to the database? How many entities are retrieved from the database during this test?
 
-**Task 11** Eager fetching on the associations such as OneToMany are very usually a bad practice. Remove EAGER fetch from PetStore.cages and Cage.pets. Disable the eagerFetchTest (use @Test(enabled=false)) and implement two unit tests in LoadStateTests that will check that after loading a Cage or a PetStore, the collections are not loaded.
+**Task 11** Eager fetch setting on the associations such as OneToMany are very usually a bad practice. Remove EAGER fetch from PetStore.cages and Cage.pets. Disable the eagerFetchTest (use @Test(enabled=false)) and implement two unit tests in LoadStateTests that will check that after loading a Cage or a PetStore, the collections are not loaded.
  
 
 **Task 12** This task requires you to work with EntityLifecycleTest. You can see that entityDetachTest fails. We modify detached entity by setting name "Honza" and we would like that to propagate into the database. Use EntityManager.merge method instead of the comment "//ASSOCIATE HERE" to get the name changed in the database 
 
-**Task 13** Change the name again to "Marek" on line commented with "//CHANGE MANAGED ENTITY HERE", as you can see the changes will be propagated into the database because the entity is in MANAGED state.  
+**Task 13** Change the name again to "Marek" on line commented with "//CHANGE MANAGED ENTITY HERE". Be careful, the merge method that you used in **Task 12** will NOT MAKE the argument that you passed to the merge method MANAGED. The merge method RETURNS a new instance that is MANAGED. If you done everything correctly, can see the changes will be propagated into the database because the entity is in MANAGED state.  
 
 **Task 14** Modify the entityRemove test on line marked "		//DELETE THE PET HERE". Delete the pet with id "pet1Id". The test should pass after your changes.
 
-**Task 15**  JPQL. You will work with JpqlTest.java. Your task is to fix all the tests by only rewriting the JPQL queries (the JPQL query is the argument in every em.createQuery method). 
+**Task 15**  JPQL. You will work with JpqlTest.java. Your task is to fix all the tests by only rewriting the JPQL queries (the JPQL query is the argument in every em.createQuery method). There are lot of hints in the comments in the test methods. When solving each test method read them carefully. 
 
 **Task 16**  Cascading. Many operations in JPA (e.g. persisting, removal) can be cascaded, meaning that the operation is propagated through a relation. You will work with test EntityLifecycleTest.persistCascade. When you run the test you should see the following problem:
 

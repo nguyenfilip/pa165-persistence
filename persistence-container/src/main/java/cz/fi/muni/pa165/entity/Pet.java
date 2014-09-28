@@ -31,7 +31,7 @@ public class Pet {
 	@Column(nullable=false)
 	private String name;
 	
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne()
 	private Cage cage = null;
 	
 	@Enumerated(EnumType.STRING)
