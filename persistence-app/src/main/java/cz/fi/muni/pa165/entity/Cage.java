@@ -2,89 +2,90 @@ package cz.fi.muni.pa165.entity;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-
 @Entity
 public class Cage {
 
-	@Id
-	@GeneratedValue
-	private long id = -1;
+    @Id
+    @GeneratedValue
+    private long id = -1;
 
-	private String description;
-	private int capacity;
-	
-	@OneToMany(mappedBy="cage")
-	private Set<Pet> pets = new HashSet<Pet>();
+    private String description;
+    private int capacity;
 
-	public long getId() {
-		return id;
-	}
+    @OneToMany(mappedBy = "cage")
+    private Set<Pet> pets = new HashSet<Pet>();
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public int getCapacity() {
-		return capacity;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
-	}
+    public int getCapacity() {
+        return capacity;
+    }
 
-	public Set<Pet> getPets() {
-		return pets;
-	}
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
 
-	public void setPets(Set<Pet> pets) {
-		this.pets = pets;
-	}
+    public Set<Pet> getPets() {
+        return pets;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		return result;
-	}
+    public void setPets(Set<Pet> pets) {
+        this.pets = pets;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cage other = (Cage) obj;
-		if (id != other.id)
-			return false;
-		return true;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (id ^ (id >>> 32));
+        return result;
+    }
 
-	@Override
-	public String toString() {
-		return "Cage [id=" + id + ", description=" + description
-				+ ", capacity=" + capacity  + "]";
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Cage other = (Cage) obj;
+        if (id != other.id) {
+            return false;
+        }
+        return true;
+    }
 
-	public void addPet(Pet pet) {
-		pets.add(pet);
-		
-	}
-	
+    @Override
+    public String toString() {
+        return "Cage [id=" + id + ", description=" + description
+                + ", capacity=" + capacity + "]";
+    }
+
+    public void addPet(Pet pet) {
+        pets.add(pet);
+    }
+
 }
