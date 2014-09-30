@@ -1,7 +1,9 @@
 package cz.fi.muni.pa165.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -54,7 +57,8 @@ public class PetStore {
 	private Address address;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
-	private Set<Address> previousAddresses = new HashSet<Address>();
+        @OrderBy(value = "street asc")        
+	private List<Address> previousAddresses = new ArrayList<Address>();
 	
 	public Address getAddress() {
 		return address;
@@ -62,10 +66,10 @@ public class PetStore {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	public Set<Address> getPreviousAddresses() {
+	public List<Address> getPreviousAddresses() {
 		return previousAddresses;
 	}
-	public void setPreviousAddresses(Set<Address> previousAddresses) {
+	public void setPreviousAddresses(List<Address> previousAddresses) {
 		this.previousAddresses = previousAddresses;
 	}
 	public String getTextIdentifier() {
