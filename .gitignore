@@ -1,2 +1,15 @@
-/persistence-app/target/
-/persistence-jpql/target/
+# maven
+target/
+
+# java classes
+*.class
+
+# eclipse
+.project
+.classpath
+.settings
+
+# netbeans
+nb-configuration.xml
+nbactions*.xml
+
