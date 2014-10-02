@@ -24,7 +24,7 @@ Check the correctnes with tests:
 
 **Task 05** Embedded mapping. Create Embeddable class Address and map it using annotation @Embedded as a part of the PetStore (its commented out in the PetStore entity right now). Uncomment code that is commented out in test  embeddedAddressTest  and then run the test
 
-**Task 06** Embedded element collection mapping. Add a collection "Set<Address> previousAddresses" to the PetStore. Do not map this as one to many but instead use ElementCollection and reuse the Address that you created in **Task 05**
+**Task 06** Embedded element collection mapping. Add a collection "Set&lt;Address&gt; previousAddresses" to the PetStore. Do not map this as one to many but instead use ElementCollection and reuse the Address that you created in **Task 05**
 Also set fetch type to "fetch=FetchType.EAGER" so that the previous addresses are always fetched together with a PetStore
 Again uncomment the code in embeddedOldAddressesTest and run the test
 
